@@ -3,18 +3,17 @@ import Model.Admin;
 import Model.Customer;
 import Model.GameVariant;
 import Model.User;
+import Utils.CSVWriter;
 
+import java.sql.SQLException;
 import java.util.*;
 public class Main {
-    public static void main(String[] args) {
-        AddressController addressController = new AddressController();
+    public static void main(String[] args) throws SQLException {
         AdminController adminController = new AdminController();
         BasketController basketController = new BasketController();
-        CardController cardController = new CardController();
         CustomerController customerController = new CustomerController();
         GameController gameController = new GameController();
         GameVariantController gameVariantController = new GameVariantController();
-        WishlistController wishlistController = new WishlistController();
 
         Scanner sc = new Scanner(System.in);
         String option;
@@ -22,48 +21,61 @@ public class Main {
         System.out.println("Welcome to X-Game Platform");
 
         while(true) {
-            System.out.println("Choose what type of account you want to work with:\n1. Admin account\n2. Customer account\n3. Demo account\n4. Exit");
+            System.out.println("Choose what type of account you want to work with:\n1. Admin account\n2. Customer account\n3. Exit");
             option = sc.nextLine();
             switch (option) {
                 case "1" -> {
-                    if(adminController.getAll().size() == 0) {
+                    System.out.println("Insert the CNP of the account with which you want to work: ");
+                    option = sc.nextLine();
+                    Admin admin = (Admin) adminController.getById(option);
+                    if(adminController.getAll().size() == 0 || admin.getCNP().equals("DEMO-CNP")) {
                         System.out.println("It looks like you don't have an Admin account yet. Let's get started!\n");
-                        User admin = adminController.add();
+                        CSVWriter.CSVFile("[ADMIN]: New insert");
+                        adminController.add();
                     } else {
-                        System.out.println("To get enter in our application you have to insert your CNP first.\n");
-                        String CNP = sc.nextLine();
-                        if(!CNP.equals(adminController.getAll().get(0).getCNP())) {
+                        System.out.println("To enter in our application you have to insert your firstName and lastName first.");
+                        System.out.println("First name: ");
+                        String firstName = sc.nextLine();
+                        System.out.println("Last name: ");
+                        String lastName = sc.nextLine();
+                        if(!firstName.equals(admin.getFirstName()) && !lastName.equals(admin.getLastName())) {
+                            CSVWriter.CSVFile("[ADMIN]: Login credentials incorrect");
                             System.out.println("[ADMIN-CREDENTIALS]: Your credentials are not good. Bye-Bye");
                             return;
                         }
+                        CSVWriter.CSVFile("[ADMIN]: Login done");
                         System.out.println("[ADMIN-CREDENTIALS]: Nice credentials. Welcome Admin!\n");
                         boolean isAdmin = true;
                         while(isAdmin) {
-                            User admin = adminController.getAll().get(0);
                             System.out.println("Choose an option:\n1. Create a game\n2. Create a game variant\n3. See your account details\n4. See all games\n5. See all game variants\n6. Exit");
                             option = sc.nextLine();
                             switch (option) {
                                 case "1" -> {
+                                    CSVWriter.CSVFile("[Game]: New insert");
                                     gameController.add();
                                     break;
                                 }
                                 case "2" -> {
+                                    CSVWriter.CSVFile("[GameVariant]: New insert");
                                     System.out.println("You have to choose from those game:\n");
                                     gameController.getAll();
                                     System.out.println("Insert the id for which you want to create a game variant");
-                                    UUID id = UUID.fromString(sc.nextLine());
-                                    gameController.addVariant(id);
+                                    UUID gameId = UUID.fromString(sc.nextLine());
+                                    gameController.addVariant(gameId);
                                     break;
                                 }
                                 case "3" -> {
-                                    adminController.getById(admin.getUserId());
+                                    CSVWriter.CSVFile("[ADMIN]: See details");
+                                    adminController.read(admin);
                                     break;
                                 }
                                 case "4" -> {
+                                    CSVWriter.CSVFile("[Game]: See games");
                                     gameController.getAll();
                                     break;
                                 }
                                 case "5" -> {
+                                    CSVWriter.CSVFile("[GameVariant]: See game variants");
                                     gameVariantController.getAll();
                                     break;
                                 }
@@ -78,48 +90,77 @@ public class Main {
 
                 }
                 case "2" -> {
-                    if(customerController.getAll().size() == 0) {
+                    System.out.println("Insert the CNP of the account with which you want to work: ");
+                    String customerId = sc.nextLine();
+                    Customer customer = (Customer) customerController.getById(customerId);
+                    if(customerController.getAll().size() == 0 || customer.getCNP().equals("DEMO-CNP")) {
+                        CSVWriter.CSVFile("[Customer]: New insert");
                         System.out.println("It looks like you don't have an Customer account yet. Let's get started!\n");
-                        User customer = customerController.add();
+                        customerController.add();
                     } else {
-                        System.out.println("To get enter in our application you have to insert your CNP first.\n");
-                        String CNP = sc.nextLine();
-                        if(!CNP.equals(customerController.getAll().get(0).getCNP())) {
+                        System.out.println("To enter in our application you have to insert your firstName and lastName first.");
+                        System.out.println("First name: ");
+                        String firstName = sc.nextLine();
+                        System.out.println("Last name: ");
+                        String lastName = sc.nextLine();
+                        if(!firstName.equals(customer.getFirstName()) || !lastName.equals(customer.getLastName())) {
+                            CSVWriter.CSVFile("[Customer]: Login credentials incorrect");
                             System.out.println("[CUSTOMER-CREDENTIALS]: Your credentials are not good. Bye-Bye");
                             return;
                         }
+                        CSVWriter.CSVFile("[Customer]: Login correct");
                         System.out.println("[CUSTOMER-CREDENTIALS]: Nice credentials. Welcome Customer!\n");
                         boolean isCustomer = true;
                         while(isCustomer) {
-                            User customer = customerController.getAll().get(0);
-                            System.out.println("Choose an option:\n1. See all games\n2. See all game variants\n3. Create basket\n4. Create wishlist\n5. Create card\n6. Create address\n7. Exit");
+                            System.out.println("Choose an option:\n1. See all games\n2. See all game variants\n3. Add to basket\n4. View Basket\n5. Update basket\n6. Remove variant from basket\n7. Exit");
                             option = sc.nextLine();
                             switch (option) {
                                 case "1" -> {
+                                    CSVWriter.CSVFile("[Game]: See games");
                                     gameController.getAll();
                                     break;
                                 }
                                 case "2" -> {
+                                    CSVWriter.CSVFile("[GameVariant]: See game variants");
                                     gameVariantController.getAll();
                                     break;
                                 }
                                 case "3" -> {
-                                    basketController.add();
+                                    CSVWriter.CSVFile("[Basket]: Add to basket");
+                                    System.out.println("Insert the ID of the gameVariant to add in the basket");
+                                    option = sc.nextLine();
+                                    basketController.addVariant(customer.getBasket().getBasketId().toString(), option);
                                     break;
                                 }
                                 case "4" -> {
-                                    wishlistController.add();
+                                    CSVWriter.CSVFile("[Basket]: View basket");
+                                    basketController.read(customer.getBasket());
                                     break;
                                 }
                                 case "5" -> {
-                                    cardController.add();
+                                    CSVWriter.CSVFile("[Basket]: Update basket");
+                                    System.out.println("Select the title for your new basket");
+                                    option = sc.nextLine();
+                                    basketController.update(option, customer.getBasket().getBasketId());
+                                    customer = (Customer) customerController.getById(customerId);
                                     break;
                                 }
                                 case "6" -> {
-                                    addressController.add();
+                                    CSVWriter.CSVFile("[Basket]: Remove from basket");
+                                    System.out.println("Insert the ID of the gameVariant to remove from the basket");
+                                    option = sc.nextLine();
+                                    basketController.remove(option, customer.getBasket().getBasketId());
+                                    customer = (Customer) customerController.getById(customerId);
                                     break;
                                 }
                                 case "7" -> {
+                                    CSVWriter.CSVFile("[Basket]: Delete basket");
+                                    basketController.deleteById(customer.getBasket().getBasketId());
+                                    customer = (Customer) customerController.getById(customerId);
+                                    break;
+                                }
+                                case "9" -> {
+                                    CSVWriter.CSVFile("[Customer]: Exit");
                                     System.out.println("Bye bye");
                                     isCustomer = false;
                                     break;
@@ -129,36 +170,12 @@ public class Main {
                     }
                 }
                 case "3" -> {
-                    System.out.println("We will setup a DEMO account for you!\n");
-                    User customer = customerController.addDefault();
-                    while(true) {
-                        System.out.println("Choose an option:\n1. See all games\n2. See all game variants\n3. See your account details\n4. Exit");
-                        option = sc.nextLine();
-                        switch (option) {
-                            case "1" -> {
-                                gameController.getAll();
-                                break;
-                            }
-                            case "2" -> {
-                                gameVariantController.getAll();;
-                                break;
-                            }
-                            case "3" -> {
-                                customerController.getById(customer.getUserId());
-                                break;
-                            }
-                            case "4" -> {
-                                System.out.println("Bye Bye");
-                                return;
-                            }
-                        }
-                    }
-                }
-                case "4" -> {
+                    CSVWriter.CSVFile("[User]: Exit application");
                     System.out.println("Thanks for using our app!");
                     return;
                 }
                 default -> {
+                    CSVWriter.CSVFile("[User]: Inccorect key");
                     System.out.println("Incorect key! Try again");
                 }
             }

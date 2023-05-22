@@ -1,5 +1,6 @@
 package Controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -35,33 +36,13 @@ public class CustomerController {
         System.out.print("Enter customer's CNP: ");
         String cnp = scanner.nextLine();
 
-        // Create cards for customer
-        ArrayList<Card> cards = new ArrayList<>();
-        ArrayList<Address> addresses = new ArrayList<>();
-        ArrayList<Wishlist> wishlists = new ArrayList<>();
-        Basket basket;
-        int numCards = readInt("Enter number of cards to add: ");
-        for (int i = 0; i < numCards; i++) {
-            cards.add(cardController.create());
-        }
+        Card[] cards = {};
+        Address[] addresses = {};
+        Wishlist[] wishlists = {};
+        Basket basket = basketController.create(UUID.randomUUID());
+        System.out.println(basket.getTitle());
 
-        // Create addresses for customer
-        int numAddresses = readInt("Enter number of addresses to add: ");
-        for (int i = 0; i < numAddresses; i++) {
-            addresses.add(addressController.create());
-        }
-
-        // Create wishlist for customer
-        int numWishlists = readInt("Enter number of wishlists to add: ");
-        for (int i = 0; i < numAddresses; i++) {
-            wishlists.add(wishlistController.create());
-        }
-
-        // Create basket for customer
-        basket = basketController.create();
-
-        Customer customer = new Customer(UUID.randomUUID(), firstName, lastName, cnp, false, cards.toArray(new Card[cards.size()]), addresses.toArray(new Address[addresses.size()]), wishlists.toArray(new Wishlist[wishlists.size()]), basket);
-        return customer;
+        return new Customer(UUID.randomUUID(), UUID.randomUUID(), firstName, lastName, cnp, cards, addresses, wishlists, basket);
     }
 
     public void read(Customer customer) {
@@ -98,43 +79,24 @@ public class CustomerController {
         basketController.read(customer.getBasket());
     }
 
-    private int readInt(String message) {
-        System.out.print(message);
-        while (!scanner.hasNextInt()) {
-            System.out.println("Invalid input. Please enter a number.");
-            scanner.next();
-            System.out.print(message);
-        }
-        int num = scanner.nextInt();
-        scanner.nextLine(); // consume the newline character
-        return num;
-    }
-
-    public Customer addDefault() {
-        Customer customer = new Customer();
-        customerService.Add(customer);
-        return customer;
-    }
-
-    public Customer add() {
+    public Customer add() throws SQLException {
         Customer customer = create();
         customerService.Add(customer);
         return customer;
     }
 
-    public void getById(UUID uuid) {
-        Customer customer = customerService.GetById(uuid);
-        read(customer);
+    public User getById(String CNP) throws SQLException {
+        return customerService.GetById(CNP);
     }
 
-    public void showAll() {
+    public void showAll() throws SQLException {
         List<User> customers = customerService.GetAll();
         for(User customer : customers) {
             read((Customer)customer);
         }
     }
 
-    public List<User> getAll() {
+    public List<User> getAll() throws SQLException {
         return customerService.GetAll();
     }
 }

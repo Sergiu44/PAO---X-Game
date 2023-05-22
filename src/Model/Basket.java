@@ -1,11 +1,12 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Basket {
     private UUID basketId;
     private String title;
-    private GameVariant[] gameVariants;
+    private ArrayList<GameVariant> gameVariants;
 
     public UUID getBasketId() {
         return basketId;
@@ -23,21 +24,23 @@ public class Basket {
         this.title = title;
     }
 
-    public GameVariant[] getGameVariants() {
+    public ArrayList<GameVariant> getGameVariants() {
         return gameVariants;
     }
 
-    public void setGameVariants(GameVariant[] gameVariants) {
+    public void setGameVariants(ArrayList<GameVariant> gameVariants) {
         this.gameVariants = gameVariants;
     }
 
-    public Basket(UUID basketId, String title, GameVariant[] gameVariants) {
+    public Basket(UUID basketId, String title, ArrayList<GameVariant> gameVariants) {
         this.basketId = basketId;
         this.title = title;
         this.gameVariants = gameVariants;
     }
 
     public Basket() {
-        this.gameVariants = new GameVariant[]{};
+        this.basketId = UUID.randomUUID();
+        this.title = "Default Basket";
+        this.gameVariants = new ArrayList<>();
     }
 }

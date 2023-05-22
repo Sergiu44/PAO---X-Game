@@ -3,24 +3,29 @@ package Model;
 import java.util.UUID;
 
 public final class Admin extends User {
-    private final static Boolean isAdmin = Boolean.TRUE;
-    private Boolean isDeleted;
+    private UUID adminId;
+    private int gamesCreated;
+    private int gameVariantsCreated;
 
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
+    public UUID getAdminId() { return adminId; }
+    public void setAdminId(UUID adminId) { this.adminId = adminId; }
+    public int getGamesCreated() { return this.gamesCreated; }
+    public void setGamesCreated(int gamesCreated) { this.gamesCreated = gamesCreated; }
+    public int getGameVariantsCreated() { return gameVariantsCreated; }
+    public void setGameVariantsCreated(int gameVariantsCreated) { this.gameVariantsCreated = gameVariantsCreated; }
 
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-    }
 
     public Admin() {
-        super(UUID.randomUUID(), "DEMO", "DEMO", "DEMO-CNP", true);
-        this.isDeleted = true;
+        super(UUID.randomUUID(), "DEMO", "DEMO", "DEMO-CNP");
+        this.adminId = UUID.randomUUID();
+        this.gamesCreated = 0;
+        this.gameVariantsCreated = 0;
     }
 
-    public Admin(UUID adminId, String firstName, String lastName, String CNP) {
-        super(adminId, firstName, lastName, CNP, true);
-        this.isDeleted = true;
+    public Admin(UUID adminId, int gamesCreated, int gameVariantsCreated, UUID userId, String firstName, String lastName, String CNP) {
+        super(userId, firstName, lastName, CNP);
+        this.adminId = adminId;
+        this.gamesCreated = gamesCreated;
+        this.gameVariantsCreated = gameVariantsCreated;
     }
 }

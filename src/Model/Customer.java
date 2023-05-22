@@ -2,13 +2,15 @@ package Model;
 
 import java.util.UUID;
 
-public class Customer extends User {
+public final class Customer extends User {
+    private UUID customerId;
     private Card[] cards;
     private Address[] addresses;
     private Wishlist[] wishlist;
     private Basket basket;
-    private static final Boolean isAdmin = false;
 
+    public UUID getCustomerId() { return this.customerId; }
+    public void setCustomerId(UUID customerId) { this.customerId = customerId; }
     public Card[] getCards() {
         return cards;
     }
@@ -42,15 +44,17 @@ public class Customer extends User {
     }
 
     public Customer() {
-        super(UUID.randomUUID(), "DEMO", "DEMO", "DEMO-CNP", false);
+        super(UUID.randomUUID(), "DEMO", "DEMO", "DEMO-CNP");
+        this.customerId = UUID.randomUUID();
         this.cards = new Card[]{};
         this.addresses = new Address[]{};
         this.wishlist = new Wishlist[]{};
         this.basket = new Basket();
     }
 
-    public Customer(UUID userId, String firstName, String lastName, String CNP, Boolean isAdmin, Card[] cards, Address[] addresses, Wishlist[] wishlist, Basket basket) {
-        super(userId, firstName, lastName, CNP, isAdmin);
+    public Customer(UUID userId, UUID customerId, String firstName, String lastName, String CNP, Card[] cards, Address[] addresses, Wishlist[] wishlist, Basket basket) {
+        super(userId, firstName, lastName, CNP);
+        this.customerId = customerId;
         this.cards = cards;
         this.addresses = addresses;
         this.wishlist = wishlist;

@@ -7,7 +7,6 @@ public class User {
     private String firstName;
     private String lastName;
     private String CNP;
-    private Boolean isAdmin;
 
     public UUID getUserId() {
         return userId;
@@ -41,22 +40,13 @@ public class User {
         this.CNP = CNP;
     }
 
-    public Boolean getAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
-    }
-
     public User() {
     }
 
-    public User(UUID userId, String firstName, String lastName, String CNP, Boolean isAdmin) {
+    public User(UUID userId, String firstName, String lastName, String CNP) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.CNP = CNP;
-        this.isAdmin = isAdmin;
     }
 }

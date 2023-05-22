@@ -1,5 +1,6 @@
 package Controller;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -51,17 +52,17 @@ public class GameVariantController {
         System.out.println("Created At: " + gameVariant.getCreateAt());
     }
 
-    public void add() {
+    public void add() throws SQLException {
         GameVariant gameVariant = create();
         gameVariantService.Add(gameVariant);
     }
 
-    public void getById(UUID uuid) {
+    public void getById(UUID uuid) throws SQLException {
         GameVariant gameVariant = gameVariantService.GetById(uuid);
         read(gameVariant);
     }
 
-    public void getAll() {
+    public void getAll() throws SQLException {
         List<GameVariant> games = gameVariantService.GetAll();
         if(games.size() != 0) {
             for (GameVariant game : games) {

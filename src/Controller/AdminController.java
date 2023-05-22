@@ -1,5 +1,6 @@
 package Controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -25,51 +26,37 @@ public class AdminController {
         String lastName = scanner.nextLine();
         System.out.print("Enter CNP: ");
         String cnp = scanner.nextLine();
-        Admin admin = new Admin();
-        admin.setFirstName(firstName);
-        admin.setLastName(lastName);
-        admin.setCNP(cnp);
-        admin.setUserId(UUID.randomUUID());
-        admin.setDeleted(false);
-        // Save the admin user to the database or other storage mechanism
-        return admin;
+        return new Admin(UUID.randomUUID(), 0, 0, UUID.randomUUID(), firstName, lastName, cnp);
     }
 
     public void read(Admin admin) {
         System.out.println("Admin user information:");
-        // Retrieve the admin user from the database or other storage mechanism
+        System.out.println("Admin ID: " + admin.getAdminId());
         System.out.println("First Name: " + admin.getFirstName());
         System.out.println("Last Name: " + admin.getLastName());
         System.out.println("CNP: " + admin.getCNP());
-        System.out.println("User ID: " + admin.getUserId());
-        System.out.println("Is Deleted: " + admin.getDeleted());
+        System.out.println("Games Created: "  + admin.getGamesCreated());
+        System.out.println("Games Variants Created: "  + admin.getGameVariantsCreated());
     }
 
-    public Admin addDefault() {
-        Admin admin = new Admin();
-        adminService.Add(admin);
-        return admin;
-    }
-
-    public Admin add() {
+    public Admin add() throws SQLException {
         Admin admin = create();
         adminService.Add(admin);
         return admin;
     }
 
-    public void getById(UUID uuid) {
-        User user = adminService.GetById(uuid);
-        read((Admin)user);
+    public User getById(String CNP) throws SQLException {
+        return adminService.GetById(CNP);
     }
 
-    public void showAll() {
+    public void showAll() throws SQLException {
         List<User> users = adminService.GetAll();
         for(User user : users) {
             read((Admin)user);
         }
     }
 
-    public List<User> getAll(){
+    public List<User> getAll() throws SQLException {
         return adminService.GetAll();
     }
 }

@@ -1,9 +1,7 @@
 package Controller;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
-import java.util.UUID;
+import java.sql.SQLException;
+import java.util.*;
 
 import Model.*;
 import Service.GameService;
@@ -35,14 +33,19 @@ public class GameController {
         Float rrp = scanner.nextFloat();
         scanner.nextLine();
         Date createdAt = new Date();
-        System.out.print("Enter the number of game variants: ");
-        int numGameVariants = scanner.nextInt();
-        scanner.nextLine(); // consume the newline character
-        GameVariant[] gameVariants = new GameVariant[numGameVariants];
-        for (int i = 0; i < numGameVariants; i++) {
-            System.out.println("Game variant #" + (i+1) + ":");
-            GameVariant gameVariant = gameVariantController.create();
-            gameVariants[i] = gameVariant;
+        System.out.println("Do you wish to add variants to this game?");
+        String answer = scanner.nextLine();
+        GameVariant[] gameVariants = {};
+        if(answer.toLowerCase().equals("yes")) {
+            System.out.print("Enter the number of game variants: ");
+            int numGameVariants = scanner.nextInt();
+            scanner.nextLine(); // consume the newline character
+            gameVariants = new GameVariant[numGameVariants];
+            for (int i = 0; i < numGameVariants; i++) {
+                System.out.println("Game variant #" + (i + 1) + ":");
+                GameVariant gameVariant = gameVariantController.create();
+                gameVariants[i] = gameVariant;
+            }
         }
         Game game = new Game();
         game.setGameId(UUID.randomUUID());
@@ -52,22 +55,20 @@ public class GameController {
         game.setRrp(rrp);
         game.setCreateAt(createdAt);
         game.setGameVariants(gameVariants);
-        // Save the game to the database or other storage mechanism
         return game;
     }
 
     public void read(Game game) {
         System.out.println("Game information:");
-        // Retrieve the game from the database or other storage mechanism
         System.out.println("Game ID: " + game.getGameId());
         System.out.println("Title: " + game.getTitle());
         System.out.println("Description: " + game.getDescription());
         System.out.println("Price: " + game.getPrice());
         System.out.println("RRP: " + game.getRrp());
         System.out.println("Created At: " + game.getCreateAt());
-        System.out.println("Game Variants:");
         GameVariant[] gameVariants = game.getGameVariants();
-        if(gameVariants.length != 0) {
+        if(gameVariants != null) {
+            System.out.println("Game Variants:");
             for (int i = 0; i < gameVariants.length; i++) {
                 GameVariant gameVariant = gameVariants[i];
                 System.out.println("Game Variant #" + (i + 1) + ": " + gameVariant.getTitle());
@@ -77,23 +78,23 @@ public class GameController {
         }
     }
 
-    public void add() {
+    public void add() throws SQLException {
         Game game = create();
         gameService.Add(game);
     }
 
-    public void addVariant(UUID gameId) {
-        GameVariant game = gameVariantController.create();
-        gameVariantService.Add(game);
-        gameService.AddVariant(gameId, game);
+    public void addVariant(UUID gameId) throws SQLException {
+        GameVariant gameVariant = gameVariantController.create();
+        gameVariantService.Add(gameVariant);
+        gameService.AddVariant(gameId, gameVariant.getGameVariantId());
     }
 
-    public void getById(UUID uuid) {
+    public void getById(UUID uuid) throws SQLException {
         Game game = gameService.GetById(uuid);
         read(game);
     }
 
-    public void getAll() {
+    public void getAll() throws SQLException {
         List<Game> games = gameService.GetAll();
         if(games.size() != 0) {
             for (Game game : games) {

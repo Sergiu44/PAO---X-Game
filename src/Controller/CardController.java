@@ -5,6 +5,7 @@ import Model.Card;
 import Model.GameVariant;
 import Service.CardService;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class CardController {
@@ -51,17 +52,17 @@ public class CardController {
         System.out.println("Credit: " + card.getCredit());
     }
 
-    public void add() {
+    public void add() throws SQLException {
         Card card = create();
         cardService.Add(card);
     }
 
-    public void getById(UUID uuid) {
+    public void getById(UUID uuid) throws SQLException {
         Card card = cardService.GetById(uuid);
         read(card);
     }
 
-    public void getAll() {
+    public void getAll() throws SQLException {
         List<Card> cards = cardService.GetAll();
         for(Card card : cards) {
             read(card);

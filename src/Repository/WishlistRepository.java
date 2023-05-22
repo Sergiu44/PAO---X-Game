@@ -1,5 +1,6 @@
 package Repository;
 
+import Model.Basket;
 import Model.Wishlist;
 
 import java.util.ArrayList;
@@ -30,10 +31,11 @@ public class WishlistRepository implements IRepository<Wishlist> {
     }
 
     @Override
-    public void deleteById(UUID basketId) {
+    public Basket deleteById(UUID basketId) {
         boolean removed = wishlists.removeIf(basket -> basket.getWishlistId().equals(basketId));
         if (!removed) {
             throw new RuntimeException("Basket not found");
         }
+        return null;
     }
 }

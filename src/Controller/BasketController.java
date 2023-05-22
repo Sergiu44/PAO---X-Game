@@ -1,5 +1,8 @@
 package Controller;
 
+import java.sql.Array;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -14,33 +17,21 @@ import Service.BasketService;
 public class BasketController {
 
     private final Scanner scanner = new Scanner(System.in);
-    private final GameVariantController gameVariantController;
     private final BasketService basketService;
 
     public BasketController() {
-        this.gameVariantController = new GameVariantController();
         this.basketService = new BasketService();
 
     }
 
-    public Basket create() {
+    public Basket create(UUID basketId) {
         System.out.println("Creating a new basket:");
         System.out.print("Enter title: ");
         String title = scanner.nextLine();
-        System.out.print("Enter the number of game variants: ");
-        int numGameVariants = scanner.nextInt();
-        scanner.nextLine(); // consume the newline character
-        GameVariant[] gameVariants = new GameVariant[numGameVariants];
-        for (int i = 0; i < numGameVariants; i++) {
-            System.out.println("Game variant #" + (i+1) + ":");
-            GameVariant gameVariant = gameVariantController.create();
-            gameVariants[i] = gameVariant;
-        }
+
         Basket basket = new Basket();
-        basket.setBasketId(UUID.randomUUID());
+        basket.setBasketId(basketId);
         basket.setTitle(title);
-        basket.setGameVariants(gameVariants);
-        // Save the basket to the database or other storage mechanism
         return basket;
     }
 
@@ -50,10 +41,10 @@ public class BasketController {
         System.out.println("Basket ID: " + basket.getBasketId());
         System.out.println("Title: " + basket.getTitle());
         System.out.println("Game Variants:");
-        GameVariant[] gameVariants = basket.getGameVariants();
-        if(gameVariants.length > 0) {
-            for (int i = 0; i < gameVariants.length; i++) {
-                GameVariant gameVariant = gameVariants[i];
+        ArrayList<GameVariant> gameVariants = basket.getGameVariants();
+        if(gameVariants.size() > 0) {
+            for (int i = 0; i < gameVariants.size(); i++) {
+                GameVariant gameVariant = gameVariants.get(i);
                 System.out.println("Game Variant #" + (i + 1) + ": " + gameVariant.getTitle());
             }
         } else {
@@ -61,20 +52,36 @@ public class BasketController {
         }
     }
 
-    public void add() {
-        Basket basket = create();
+    public void add(UUID basketId) throws SQLException {
+        Basket basket = create(basketId);
         basketService.Add(basket);
     }
 
-    public void getById(UUID uuid) {
+    public void addVariant(String basketId, String gameVariantId) throws SQLException {
+        basketService.AddVariant(basketId, gameVariantId);
+    }
+
+    public void getById(UUID uuid) throws SQLException {
         Basket basket = basketService.GetById(uuid);
         read(basket);
     }
 
-    public void getAll() {
+    public void getAll() throws SQLException {
         List<Basket> baskets = basketService.GetAll();
         for(Basket basket : baskets) {
             read(basket);
         }
+    }
+
+    public void update(String newTitle, UUID basketId) throws SQLException {
+        basketService.Update(newTitle, basketId);
+    }
+
+    public void remove(String gameVariantId, UUID basketId) throws SQLException {
+        basketService.Remove(gameVariantId, basketId);
+    }
+
+    public Basket deleteById(UUID basketId) throws SQLException {
+        return basketService.DeleteById(basketId);
     }
 }

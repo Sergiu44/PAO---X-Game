@@ -1,5 +1,6 @@
 package Controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -53,17 +54,17 @@ public class AddressController {
         System.out.println("Phone Number: " + address.getPhoneNumber());
     }
 
-    public void add() {
+    public void add() throws SQLException {
         Address address = create();
         addressService.Add(address);
     }
 
-    public void getById(UUID uuid) {
+    public void getById(UUID uuid) throws SQLException {
         Address address = addressService.getAddressById(uuid);
         read(address);
     }
 
-    public void getAll() {
+    public void getAll() throws SQLException {
         List<Address> addresses = addressService.getAll();
         for(Address address : addresses) {
             read(address);
