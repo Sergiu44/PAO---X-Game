@@ -85,11 +85,16 @@ public class GameRepository implements IRepository<Game> {
 
     @Override
     public Basket deleteById(UUID gameId) throws SQLException {
-        String query = "delete from game where gameId = ?";
+        String query = "delete from `game-gamevariant-mapping` where gameId = ?";
         PreparedStatement statement = con.prepareStatement(query);
         statement.setString(1, gameId.toString());
+
+        String query1 = "delete from game where gameId = ?";
+        PreparedStatement statement1 = con.prepareStatement(query1);
+        statement1.setString(1, gameId.toString());
         try {
             statement.executeUpdate();
+            statement1.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("[REPOSITORY-GAME]: Error deleting game: " + e.getMessage());
         };

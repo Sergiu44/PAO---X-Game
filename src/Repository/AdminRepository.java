@@ -82,4 +82,48 @@ public class AdminRepository extends UserRepository {
         }
         return null;
     }
+
+    public void increaseGame(UUID adminId) throws SQLException {
+        String query = "UPDATE admin SET gamesCreated = gamesCreated + 1 WHERE adminId = ?";
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.setString(1, adminId.toString());
+        try {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("[REPOSITORY-ADMIN]: Error increasing game: " + e.getMessage());
+        }
+    }
+
+    public void decreaseGame(UUID adminId) throws SQLException {
+        String query = "UPDATE admin SET gamesCreated = gamesCreated - 1 WHERE adminId = ?";
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.setString(1, adminId.toString());
+        try {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("[REPOSITORY-ADMIN]: Error decreasing game: " + e.getMessage());
+        }
+    }
+
+    public void increaseGameVariant(UUID adminId) throws SQLException {
+        String query = "UPDATE admin SET gameVariantsCreated = gameVariantsCreated + 1 WHERE adminId = ?";
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.setString(1, adminId.toString());
+        try {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("[REPOSITORY-ADMIN]: Error increasing game variant: " + e.getMessage());
+        }
+    }
+
+    public void decreaseGameVariant(UUID adminId) throws SQLException {
+        String query = "UPDATE admin SET gameVariantsCreated = gameVariantsCreated - 1 WHERE adminId = ?";
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.setString(1, adminId.toString());
+        try {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("[REPOSITORY-ADMIN]: Error decreasing game variant: " + e.getMessage());
+        }
+    }
 }

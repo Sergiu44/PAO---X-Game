@@ -47,12 +47,12 @@ public class Main {
                         System.out.println("[ADMIN-CREDENTIALS]: Nice credentials. Welcome Admin!\n");
                         boolean isAdmin = true;
                         while(isAdmin) {
-                            System.out.println("Choose an option:\n1. Create a game\n2. Create a game variant\n3. See your account details\n4. See all games\n5. See all game variants\n6. Exit");
+                            System.out.println("Choose an option:\n1. Create a game\n2. Create a game variant\n3. Delete a game\n4. Delete a game variant\n5. See your account details\n6. See all games\n7. See all game variants\n8. Exit");
                             option = sc.nextLine();
                             switch (option) {
                                 case "1" -> {
                                     CSVWriter.CSVFile("[Game]: New insert");
-                                    gameController.add();
+                                    gameController.add(admin.getAdminId());
                                     break;
                                 }
                                 case "2" -> {
@@ -61,25 +61,46 @@ public class Main {
                                     gameController.getAll();
                                     System.out.println("Insert the id for which you want to create a game variant");
                                     UUID gameId = UUID.fromString(sc.nextLine());
-                                    gameController.addVariant(gameId);
+                                    gameController.addVariant(gameId, admin.getAdminId());
                                     break;
                                 }
                                 case "3" -> {
-                                    CSVWriter.CSVFile("[ADMIN]: See details");
-                                    adminController.read(admin);
+                                    CSVWriter.CSVFile("[Game]: Delete by id");
+                                    System.out.println("Insert the ID of the game to remove");
+                                    option = sc.nextLine();
+                                    gameController.deleteById(UUID.fromString(option), admin.getAdminId());
                                     break;
                                 }
                                 case "4" -> {
+                                    CSVWriter.CSVFile("[GameVariant]: Delete by id");
+                                    System.out.println("Insert the id for which you want to create a game variant");
+                                    UUID gameId = UUID.fromString(sc.nextLine());
+                                    gameVariantController.deleteById(gameId, admin.getAdminId());
+                                    break;
+                                }
+                                case "5" -> {
+                                    CSVWriter.CSVFile("[ADMIN]: See details");
+                                    adminController.read((Admin) adminController.getById(admin.getCNP()));
+                                    break;
+                                }
+                                case "6" -> {
                                     CSVWriter.CSVFile("[Game]: See games");
                                     gameController.getAll();
                                     break;
                                 }
-                                case "5" -> {
+                                case "7" -> {
                                     CSVWriter.CSVFile("[GameVariant]: See game variants");
                                     gameVariantController.getAll();
                                     break;
                                 }
-                                case "6" -> {
+                                case "8" -> {
+                                    CSVWriter.CSVFile("[GameVariant]: See game variants by price");
+                                    System.out.println("Insert the maximum price for the game variants");
+                                    Float price = Float.valueOf(sc.nextLine());
+                                    gameVariantController.getByPrice(price);
+                                    break;
+                                }
+                                case "9" -> {
                                     System.out.println("Bye bye Admin");
                                     isAdmin = false;
                                     break;

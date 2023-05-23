@@ -24,7 +24,6 @@ public class UserRepository implements IRepository<User> {
     public void add(User user) throws SQLException {
         String query = "insert into user(userId, " + "firstName, " + "lastName, " + "CNP) VALUES (?, ?, ?, ?)";
         PreparedStatement statement = con.prepareStatement(query);
-        System.out.println(user.getUserId());
         statement.setString(1, user.getUserId().toString());
         statement.setString(2, user.getFirstName());
         statement.setString(3, user.getLastName());

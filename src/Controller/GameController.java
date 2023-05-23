@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import Model.*;
+import Repository.AdminRepository;
 import Service.GameService;
 import Service.GameVariantService;
 
@@ -13,14 +14,16 @@ public class GameController {
     private final GameVariantController gameVariantController;
     private final GameService gameService;
     private final GameVariantService gameVariantService;
+    private final AdminRepository adminRepository;
 
     public GameController() {
+        this.adminRepository = new AdminRepository();
         this.gameVariantController = new GameVariantController();
         this.gameService = new GameService();
         this.gameVariantService = new GameVariantService();
     }
 
-    public Game create() {
+    public Game create(UUID adminId) throws SQLException {
         System.out.println("Creating a new game:");
         System.out.print("Enter title: ");
         String title = scanner.nextLine();
@@ -44,6 +47,7 @@ public class GameController {
             for (int i = 0; i < numGameVariants; i++) {
                 System.out.println("Game variant #" + (i + 1) + ":");
                 GameVariant gameVariant = gameVariantController.create();
+                adminRepository.increaseGameVariant(adminId);
                 gameVariants[i] = gameVariant;
             }
         }
@@ -78,15 +82,15 @@ public class GameController {
         }
     }
 
-    public void add() throws SQLException {
-        Game game = create();
-        gameService.Add(game);
+    public void add(UUID adminId) throws SQLException {
+        Game game = create(adminId);
+        gameService.Add(game, adminId);
     }
 
-    public void addVariant(UUID gameId) throws SQLException {
+    public void addVariant(UUID gameId, UUID adminId) throws SQLException {
         GameVariant gameVariant = gameVariantController.create();
-        gameVariantService.Add(gameVariant);
-        gameService.AddVariant(gameId, gameVariant.getGameVariantId());
+        gameVariantService.Add(gameVariant, adminId);
+        gameService.AddVariant(gameId, gameVariant.getGameVariantId(), adminId);
     }
 
     public void getById(UUID uuid) throws SQLException {
@@ -103,5 +107,9 @@ public class GameController {
         } else {
             System.out.println("Currently there is no game available!");
         }
+    }
+
+    public void deleteById(UUID gameId, UUID adminId) throws SQLException {
+        gameService.DeleteById(gameId, adminId);
     }
 }

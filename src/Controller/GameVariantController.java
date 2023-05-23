@@ -1,10 +1,8 @@
 package Controller;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
+
 import Model.GameVariant;
 import Service.GameVariantService;
 
@@ -52,9 +50,9 @@ public class GameVariantController {
         System.out.println("Created At: " + gameVariant.getCreateAt());
     }
 
-    public void add() throws SQLException {
+    public void add(UUID adminId) throws SQLException {
         GameVariant gameVariant = create();
-        gameVariantService.Add(gameVariant);
+        gameVariantService.Add(gameVariant, adminId);
     }
 
     public void getById(UUID uuid) throws SQLException {
@@ -71,5 +69,34 @@ public class GameVariantController {
         } else {
             System.out.println("Currently there is no game variant available!");
         }
+    }
+
+    public void getByPrice(Float price) throws SQLException {
+        List<GameVariant> games = gameVariantService.GetAll();
+
+        // Filter games by price
+        List<GameVariant> filteredGames = new ArrayList<>();
+        for (GameVariant game : games) {
+            if (game.getPrice() != null && game.getPrice() <= price) {
+                filteredGames.add(game);
+            }
+        }
+
+        // Sort games by price in ascending order
+        filteredGames.sort(new Comparator<GameVariant>() {
+            @Override
+            public int compare(GameVariant game1, GameVariant game2) {
+                return Float.compare(game1.getPrice(), game2.getPrice());
+            }
+        });
+
+        // Print the filtered and sorted games
+        for (GameVariant game : filteredGames) {
+            System.out.println("Title: " + game.getTitle() + " - Price: $" + game.getPrice());
+        }
+    }
+
+    public void deleteById(UUID gameId, UUID adminId) throws SQLException {
+        gameVariantService.DeleteById(gameId, adminId);
     }
 }

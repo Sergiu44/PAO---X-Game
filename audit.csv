@@ -139,3 +139,70 @@
 [Basket]: View basket,2023-05-22 19:26:24
 [Basket]: Update basket,2023-05-22 19:26:27
 [Basket]: View basket,2023-05-22 19:26:36
+[User]: Exit application,2023-05-22 21:35:35
+[ADMIN]: New insert,2023-05-22 21:40:22
+[ADMIN]: Login done,2023-05-22 21:41:11
+[ADMIN]: See details,2023-05-22 21:41:14
+[ADMIN]: Login done,2023-05-22 22:11:12
+[ADMIN]: See details,2023-05-22 22:11:18
+[Game]: New insert,2023-05-22 22:11:28
+[Game]: See games,2023-05-22 22:12:12
+[ADMIN]: See details,2023-05-22 22:12:20
+[ADMIN]: Login done,2023-05-22 22:13:35
+[ADMIN]: See details,2023-05-22 22:13:38
+[ADMIN]: Login done,2023-05-22 22:15:09
+[ADMIN]: See details,2023-05-22 22:15:11
+[ADMIN]: Login done,2023-05-22 22:29:40
+[ADMIN]: See details,2023-05-22 22:29:47
+[Game]: New insert,2023-05-22 22:29:50
+[ADMIN]: Login done,2023-05-22 22:31:27
+[Game]: See games,2023-05-22 22:31:29
+[ADMIN]: See details,2023-05-22 22:32:34
+[GameVariant]: New insert,2023-05-22 22:32:44
+[ADMIN]: Login done,2023-05-22 22:34:59
+[ADMIN]: See details,2023-05-22 22:35:02
+[GameVariant]: New insert,2023-05-22 22:35:06
+[ADMIN]: See details,2023-05-22 22:35:22
+[GameVariant]: Delete by id,2023-05-22 22:35:31
+[ADMIN]: See details,2023-05-22 22:36:23
+[ADMIN]: Login done,2023-05-22 22:42:13
+[ADMIN]: See details,2023-05-22 22:42:19
+[Game]: See games,2023-05-22 22:42:55
+[GameVariant]: See game variants,2023-05-22 22:42:57
+[Game]: New insert,2023-05-22 22:43:01
+[Game]: See games,2023-05-22 22:43:12
+[ADMIN]: See details,2023-05-22 22:43:19
+[Game]: Delete by id,2023-05-22 22:43:30
+[Game]: See games,2023-05-22 22:43:50
+[ADMIN]: See details,2023-05-22 22:43:54
+[Game]: New insert,2023-05-22 22:47:07
+[ADMIN]: See details,2023-05-22 22:47:37
+[GameVariant]: See game variants,2023-05-22 22:47:44
+[Game]: See games,2023-05-22 22:47:47
+[GameVariant]: Delete by id,2023-05-22 22:47:52
+[ADMIN]: Login done,2023-05-23 10:24:32
+[Game]: See games,2023-05-23 10:24:36
+[GameVariant]: See game variants,2023-05-23 10:24:40
+[ADMIN]: See details,2023-05-23 10:24:49
+[GameVariant]: Delete by id,2023-05-23 10:24:58
+[ADMIN]: Login done,2023-05-23 10:25:37
+[GameVariant]: Delete by id,2023-05-23 10:25:40
+[GameVariant]: See game variants,2023-05-23 10:25:45
+[Game]: See games,2023-05-23 10:25:50
+[ADMIN]: See details,2023-05-23 10:26:01
+[Game]: Delete by id,2023-05-23 10:26:10
+[ADMIN]: See details,2023-05-23 10:26:16
+[Game]: See games,2023-05-23 10:26:22
+[Customer]: New insert,2023-05-23 12:00:09
+[Customer]: Login correct,2023-05-23 12:00:30
+[Basket]: View basket,2023-05-23 12:00:36
+[GameVariant]: See game variants,2023-05-23 12:00:46
+[Customer]: Exit,2023-05-23 12:01:15
+[ADMIN]: Login done,2023-05-23 12:01:21
+[GameVariant]: See game variants,2023-05-23 12:01:32
+[Game]: See games,2023-05-23 12:01:41
+[Game]: New insert,2023-05-23 12:01:43
+[Game]: See games,2023-05-23 12:02:00
+[GameVariant]: New insert,2023-05-23 12:02:08
+[GameVariant]: New insert,2023-05-23 12:02:36
+[GameVariant]: See game variants by price,2023-05-23 12:03:01

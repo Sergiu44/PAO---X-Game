@@ -72,11 +72,16 @@ public class GameVariantRepository implements IRepository<GameVariant> {
 
     @Override
     public Basket deleteById(UUID id) throws SQLException {
-        String query = "delete from gamevariant where gameVariantId = ?";
+        String query = "delete from `game-gamevariant-mapping` where variantId = ?";
         PreparedStatement statement = con.prepareStatement(query);
         statement.setString(1, id.toString());
+
+        String query1 = "delete from gamevariant where gameVariantId = ?";
+        PreparedStatement statement1 = con.prepareStatement(query1);
+        statement1.setString(1, id.toString());
         try {
             statement.executeUpdate();
+            statement1.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("[REPOSITORY-GAMEVARIANT]: Error deleting game variant: " + e.getMessage());
         }
